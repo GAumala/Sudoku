@@ -9,4 +9,8 @@
 */
 GArray *findAllClockSolutions(uint8_t clock[], int clockSize);
 
+void generarHijos(uint8_t clock[], uint8_t clockSize, SearchTreeNode *node);
+
+void printClock(uint8_t clock[], uint8_t clockSize);
+
 #endif

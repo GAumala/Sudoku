@@ -11,5 +11,8 @@ ClockPuzzle.o: ClockPuzzle.c
 main: ClockPuzzle.o SearchTreeNode.o main.c
 	gcc ClockPuzzle.o SearchTreeNode.o main.c $(GLIB) -o main
 
+test: ClockPuzzle.o SearchTreeNode.o test.c
+	gcc ClockPuzzle.o SearchTreeNode.o test.c $(GLIB) -o test
+
 clean:
-	rm *.o main
+	rm *.o main test

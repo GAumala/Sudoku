@@ -10,9 +10,6 @@ SearchTreeNode *newSearchTreeNode(SearchTreeNode *parent, void *content){
     return stn;
 }
 
-void generarHijos(uint8_t clock[], uint8_t clockSize, SearchTreeNode *node){
-
-}
 
 SearchTreeNode *getNextNode(SearchTreeNode *node){
     return NULL;

@@ -29,3 +29,12 @@ Clone this repo and then use `make` to build. The executable file is `main`.
 make
 ./main
 ```
+
+# Testing
+
+You can build a program that tests our functions using assert.h like this:
+
+```
+make test
+./test
+```

@@ -21,8 +21,6 @@ typedef struct SearchTreeNode {
 
 SearchTreeNode *newSearchTreeNode(SearchTreeNode *parent, void *content);
 
-void generarHijos(uint8_t clock[], uint8_t clockSize, SearchTreeNode *node);
-
 SearchTreeNode *getNextNode(SearchTreeNode *node);
 
 GArray *getCurrentCycle(SearchTreeNode *node);
