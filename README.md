@@ -9,7 +9,7 @@ The clock puzzle is esentially a salesman problem where every node has 2 and
 only 2 links away from it. This feature reduces the complexity of the problem
 significantly.
 
-The proposed solution consists in modelling the problem with binary search tree
+The proposed solution consists in modeling the problem with binary search tree
 and search with a depth first algorithm. This approach is complete, it will find
 every solution to any given puzzle, but it will be slow, because it is a blind
 search without heuristics. this algorithm is estimated to be O(2^n).

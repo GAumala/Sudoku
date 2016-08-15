@@ -12,7 +12,17 @@ SearchTreeNode *newSearchTreeNode(SearchTreeNode *parent, void *content){
 
 
 SearchTreeNode *getNextNode(SearchTreeNode *node){
-    return NULL;
+    if(node->isDeadEnd)
+        return node->parent;
+
+    SearchTreeNode *child = node->leftChild;
+    if(!child->isDeadEnd)
+        return child;
+    child = node->rightChild;
+    if(!child->isDeadEnd)
+        return child;
+
+    return node->parent;
 }
 
 GArray *getCurrentCycle(SearchTreeNode *node){
