@@ -4,6 +4,9 @@
 void testGetNextNode() {
     uint8_t array[] = {2, 1, 2};
     uint8_t clockSize = 3;
+    printf("\n====================\n");
+    printf("get next node\n");
+    printf("====================\n");
     printf("new test with: ");
     printClock(array, clockSize);
     printf("create new stn at position 1 of clock\n");
@@ -34,9 +37,45 @@ void testGetNextNode() {
     assert(nextNode == NULL);
 
 }
+void testGetCurrentCycle() {
+    uint8_t array[] = {3, 1, 3, 1, 2, 3};
+    uint8_t clockSize = 6;
+    printf("\n====================\n");
+    printf("get current cycle\n");
+    printf("====================\n");
+    printf("new test with: ");
+    printClock(array, clockSize);
+    SearchTreeNode *stn1 = newSearchTreeNode(NULL, array + 1);
+    SearchTreeNode *stn0 = newSearchTreeNode(stn1, array);
+    SearchTreeNode *stn3 = newSearchTreeNode(stn0, array + 3);
+    SearchTreeNode *stn4 = newSearchTreeNode(stn3, array + 4);
+    SearchTreeNode *stn2 = newSearchTreeNode(stn4, array + 2);
+    SearchTreeNode *stn5 = newSearchTreeNode(stn2, array + 5);
+    GArray * path = getCurrentPath(stn5);
+    printf("assert that path has the length of the clock\n");
+    assert(path->len == clockSize);
+    SearchTreeNode *pathnode = &g_array_index(path, SearchTreeNode, 0);
+    printf("assert that the first element of the path is stn1\n");
+    assert(stn1->content == pathnode->content);
+    pathnode = &g_array_index(path, SearchTreeNode, clockSize - 1);
+    printf("assert that the last element of the path is stn5\n");
+    assert(stn5->content == pathnode->content);
+
+    printPath(path, array);
+
+    printf("add stn1 as child of stn5 (create contradiction)\n");
+    SearchTreeNode *stnLast = newSearchTreeNode(stn5, array + 1);
+    printf("assert that contradicted path is null\n");
+    path = getCurrentPath(stnLast);
+    assert(path == NULL);
+    printf("assert that incomplete path is not null\n");
+    path = getCurrentPath(stn4);
+    assert(path != NULL && path->len < clockSize);
+}
 
 int main( int argc, char *argv[]){
     testGetNextNode();
+    testGetCurrentCycle();
     printf("\n====================\n");
     printf("testing successful!\n");
     printf("====================\n");

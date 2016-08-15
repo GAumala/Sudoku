@@ -24,7 +24,3 @@ SearchTreeNode *getNextNode(SearchTreeNode *node){
 
     return node->parent;
 }
-
-GArray *getCurrentCycle(SearchTreeNode *node){
-    return NULL;
-}
