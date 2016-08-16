@@ -22,5 +22,7 @@ SearchTreeNode *getNextNode(SearchTreeNode *node){
     if(!child->isDeadEnd)
         return child;
 
+    //both children are dead end. Let's make sure that this node is also a dead end.
+    node->isDeadEnd = 1;
     return node->parent;
 }

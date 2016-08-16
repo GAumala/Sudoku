@@ -8,8 +8,6 @@
 * En este header file estan las funciones para solucionar el problema
 * del clock puzzle
 */
-GArray *findAllClockSolutions(uint8_t clock[], int clockSize);
-
 void generarHijos(uint8_t clock[], uint8_t clockSize, SearchTreeNode *node);
 
 void printClock(uint8_t clock[], uint8_t clockSize);
@@ -17,4 +15,7 @@ void printClock(uint8_t clock[], uint8_t clockSize);
 GArray *getCurrentPath(SearchTreeNode *node);
 
 void printPath(GArray *path, uint8_t clock[]);
+
+GArray *findAllClockSolutions(uint8_t clock[], int clockSize, int verbose);
+
 #endif

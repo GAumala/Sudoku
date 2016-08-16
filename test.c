@@ -73,9 +73,63 @@ void testGetCurrentCycle() {
     assert(path != NULL && path->len < clockSize);
 }
 
+void testFindAllSolutions(){
+    uint8_t array[] = {3, 1, 3, 1, 2, 3};
+    uint8_t clockSize = 6;
+    printf("\n====================\n");
+    printf("find all solutions\n");
+    printf("====================\n");
+    printf("new test with: ");
+    printClock(array, clockSize);
+    GArray *solutions = findAllClockSolutions(array, clockSize, 0);
+    printf("assert that solution is unique\n");
+    assert(solutions->len == 1);
+    printf("assert that solution goes through positions: 1, 0, 3, 4, 2, 5\n");
+    GArray *solutionPath = &g_array_index(solutions, GArray, 0);
+    SearchTreeNode *solutionNode = &g_array_index(solutionPath, SearchTreeNode, 0);
+    assert(solutionNode->content == array + 1);
+    solutionNode = &g_array_index(solutionPath, SearchTreeNode, 1);
+    assert(solutionNode->content == array);
+    solutionNode = &g_array_index(solutionPath, SearchTreeNode, 2);
+    assert(solutionNode->content == array + 3);
+    solutionNode = &g_array_index(solutionPath, SearchTreeNode, 3);
+    assert(solutionNode->content == array + 4);
+    solutionNode = &g_array_index(solutionPath, SearchTreeNode, 4);
+    assert(solutionNode->content == array + 2);
+    solutionNode = &g_array_index(solutionPath, SearchTreeNode, 5);
+    assert(solutionNode->content == array + 5);
+}
+
+void testGenerarHijos(){
+    uint8_t array[] = {3, 1, 3, 1, 2, 3};
+    uint8_t clockSize = 6;
+    printf("\n====================\n");
+    printf("generar hijos\n");
+    printf("====================\n");
+    printf("new test with: ");
+    printClock(array, clockSize);
+    SearchTreeNode *stn = newSearchTreeNode(NULL, array + 2);
+    generarHijos(array, clockSize, stn);
+    printf("assert leftChild of 3@2 is 3@5\n");
+    assert(stn->leftChild->content == array + 5);
+    printf("assert rightChild of 3@2 is 3@5\n");
+    assert(stn->rightChild->content == array + 5);
+    printf("assert leftChild of 3@2 is dead  end\n");
+    assert(stn->leftChild->isDeadEnd);
+
+
+    stn = newSearchTreeNode(NULL, array + 5);
+    generarHijos(array, clockSize, stn);
+    printf("assert leftChild of 3@5 is 3@2\n");
+    assert(stn->leftChild->content == array + 2);
+    printf("assert rightChild of 3@2 is 3@5\n");
+    assert(stn->rightChild->content == array + 2);
+}
 int main( int argc, char *argv[]){
     testGetNextNode();
     testGetCurrentCycle();
+    testGenerarHijos();
+    testFindAllSolutions();
     printf("\n====================\n");
     printf("testing successful!\n");
     printf("====================\n");
