@@ -5,12 +5,12 @@ The goal is to find a path across every face value only once. From any position,
 the only valid movements are n positions clockwise, or n positions counter
 clockwise where n is the face value of the current position.
 
-The clock puzzle is esentially a salesman problem where every node has 2 and
-only 2 links away from it. This feature reduces the complexity of the problem
+The clock puzzle is essentially a Hamiltonian path problem where every node has
+at most 2 links away from it. This feature reduces the complexity of the problem
 significantly.
 
 The proposed solution consists in modeling the problem with binary search tree
-and search with a depth first algorithm. This approach is complete, it will find
+and searching with a depth first algorithm. This approach is complete, it will find
 every solution to any given puzzle, but it will be slow, because it is a blind
 search without heuristics. this algorithm is estimated to be O(2^n).
 
