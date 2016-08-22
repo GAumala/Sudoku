@@ -73,6 +73,20 @@ void testGetCurrentCycle() {
     assert(path != NULL && path->len < clockSize);
 }
 
+void testFindFirstSolution(){
+    uint8_t array[] = {3, 1, 3, 1, 2, 3};
+    uint8_t clockSize = 6;
+    printf("\n====================\n");
+    printf("find first Solution\n");
+    printf("====================\n");
+    printf("new test with: ");
+    printClock(array, clockSize);
+    json_object *stateList = json_object_new_array();
+    GArray *solution = findFirstClockSolution(array, clockSize, stateList, 1);
+    printf("states for solution: %s\n", json_object_to_json_string(stateList));
+    assert(solution != NULL);
+}
+
 void testFindAllSolutions(){
     uint8_t array[] = {3, 1, 3, 1, 2, 3};
     uint8_t clockSize = 6;
@@ -81,7 +95,7 @@ void testFindAllSolutions(){
     printf("====================\n");
     printf("new test with: ");
     printClock(array, clockSize);
-    GArray *solutions = findAllClockSolutions(array, clockSize, 0);
+    GArray *solutions = findAllClockSolutions(array, clockSize, NULL);
     printf("assert that solution is unique\n");
     assert(solutions->len == 1);
     printf("assert that solution goes through positions: 1, 0, 3, 4, 2, 5\n");
@@ -130,6 +144,7 @@ int main( int argc, char *argv[]){
     testGetCurrentCycle();
     testGenerarHijos();
     testFindAllSolutions();
+    testFindFirstSolution();
     printf("\n====================\n");
     printf("testing successful!\n");
     printf("====================\n");

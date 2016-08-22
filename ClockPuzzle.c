@@ -4,6 +4,18 @@ uint8_t getClockItemIndex(uint8_t clock[], uint8_t *clockItem){
     return clockItem - clock;
 }
 
+json_object *newJSONArray(uint8_t clock[], GArray *state){
+    int size = state->len;
+    json_object *newArray = json_object_new_array();
+    for(int i = 0; i < size; i++){
+        SearchTreeNode *node = &g_array_index(state, SearchTreeNode, i);
+        uint8_t *item = (uint8_t *) node->content;
+        json_object_array_add(newArray, json_object_new_int(
+            getClockItemIndex(clock, item)));
+    }
+    return newArray;
+}
+
 uint8_t getValidIndex(uint8_t clockSize, int8_t rawIndex){
     if(rawIndex < 0)
         return clockSize + rawIndex;
@@ -63,8 +75,34 @@ void printClock(uint8_t clock[], uint8_t clockSize){
     printf(" ] size: %d\n", clockSize);
 }
 
+GArray *findFirstClockSolution(uint8_t clock[], int clockSize,
+    json_object *stateList, uint8_t startPosition){
+    SearchTreeNode *root = newSearchTreeNode(NULL, clock + startPosition);
+    generarHijos(clock, clockSize, root);
+    SearchTreeNode *next = getNextNode(root);
+    while(next != NULL){
+        GArray *path = getCurrentPath(next);
+        if(stateList != NULL && path != NULL){
+            json_object_array_add(stateList, newJSONArray(clock, path));
+        }
+        if(path == NULL){//contradiction, discard
+            next->isDeadEnd = 1;
+            next = getNextNode(next->parent);
+        } else if(path->len == clockSize){//found solution
+            next->isDeadEnd = 1;
+            next = getNextNode(next->parent);
+            return path;
+        } else {//no solution yet, go deeper
+            if(next->leftChild == NULL)
+                generarHijos(clock, clockSize, next);
+            next = getNextNode(next);
+        }
+        }
 
-GArray *findAllClockSolutions(uint8_t clock[], int clockSize, int verbose){
+    return NULL;
+}
+
+GArray *findAllClockSolutions(uint8_t clock[], int clockSize, json_object *stateList){
     GArray *solutions = g_array_new(FALSE, FALSE, sizeof (GArray));
     for(int i = 0; i < clockSize; i++){
         SearchTreeNode *root = newSearchTreeNode(NULL, clock + i);
@@ -72,8 +110,10 @@ GArray *findAllClockSolutions(uint8_t clock[], int clockSize, int verbose){
         SearchTreeNode *next = getNextNode(root);
         while(next != NULL){
             GArray *path = getCurrentPath(next);
-            if(verbose && path != NULL)
-                printPath(path, clock);
+            if(stateList != NULL && path != NULL){
+                //printPath(path, clock);
+                json_object_array_add(stateList, newJSONArray(clock, path));
+            }
             if(path == NULL){//contradiction, discard
                 next->isDeadEnd = 1;
                 next = getNextNode(next->parent);

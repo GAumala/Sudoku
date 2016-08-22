@@ -2,6 +2,7 @@
 #define CLOCKPUZZLE
 
 #include <glib-2.0/glib.h>
+#include <json-c/json.h>
 #include "SearchTreeNode.h"
 
 /**
@@ -16,6 +17,17 @@ GArray *getCurrentPath(SearchTreeNode *node);
 
 void printPath(GArray *path, uint8_t clock[]);
 
-GArray *findAllClockSolutions(uint8_t clock[], int clockSize, int verbose);
+/**
+* Encuentra la prinera solucion de un reloj dada una posicion inicial
+* @param clock el reloj a resolver
+* @param clokSize el tamanio del reloj
+* @param stateList un json object donde guardar la lista de estados. El resultado
+* es un array de arrays de posiciones. Si es null no hace nada
+* @param startPosition La posicion donde iniciar la busqueda
+*/
+GArray *findFirstClockSolution(uint8_t clock[], int clockSize,
+    json_object *stateList, uint8_t startPosition);
+
+GArray *findAllClockSolutions(uint8_t clock[], int clockSize, json_object *stateList);
 
 #endif
