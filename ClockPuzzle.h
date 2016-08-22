@@ -17,16 +17,17 @@ GArray *getCurrentPath(SearchTreeNode *node);
 
 void printPath(GArray *path, uint8_t clock[]);
 
+GArray *findClockSolution(uint8_t clock[], int clockSize,
+    json_object *stateList, uint8_t startPosition);
 /**
-* Encuentra la prinera solucion de un reloj dada una posicion inicial
+* Encuentra la prinera solucion de un reloj
 * @param clock el reloj a resolver
 * @param clokSize el tamanio del reloj
 * @param stateList un json object donde guardar la lista de estados. El resultado
 * es un array de arrays de posiciones. Si es null no hace nada
-* @param startPosition La posicion donde iniciar la busqueda
 */
 GArray *findFirstClockSolution(uint8_t clock[], int clockSize,
-    json_object *stateList, uint8_t startPosition);
+    json_object *stateList);
 
 GArray *findAllClockSolutions(uint8_t clock[], int clockSize, json_object *stateList);
 

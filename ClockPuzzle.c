@@ -75,7 +75,7 @@ void printClock(uint8_t clock[], uint8_t clockSize){
     printf(" ] size: %d\n", clockSize);
 }
 
-GArray *findFirstClockSolution(uint8_t clock[], int clockSize,
+GArray *findClockSolution(uint8_t clock[], int clockSize,
     json_object *stateList, uint8_t startPosition){
     SearchTreeNode *root = newSearchTreeNode(NULL, clock + startPosition);
     generarHijos(clock, clockSize, root);
@@ -99,6 +99,18 @@ GArray *findFirstClockSolution(uint8_t clock[], int clockSize,
         }
         }
 
+    return NULL;
+}
+
+GArray *findFirstClockSolution(uint8_t clock[], int clockSize,
+    json_object *stateList){
+    for(int i = 0; i < clockSize; i++){
+        GArray *solution = findClockSolution(clock, clockSize, stateList, i);
+        if(solution == NULL){
+            json_object_put(stateList);
+            stateList = json_object_new_array();
+        } else return solution;
+    }
     return NULL;
 }
 

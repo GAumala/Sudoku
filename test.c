@@ -82,7 +82,7 @@ void testFindFirstSolution(){
     printf("new test with: ");
     printClock(array, clockSize);
     json_object *stateList = json_object_new_array();
-    GArray *solution = findFirstClockSolution(array, clockSize, stateList, 1);
+    GArray *solution = findFirstClockSolution(array, clockSize, stateList);
     printf("states for solution: %s\n", json_object_to_json_string(stateList));
     assert(solution != NULL);
 }
