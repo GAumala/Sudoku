@@ -2,4 +2,8 @@ language: c
 
 compiler: gcc
 
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install -y libjson0 libjson0-dev
+  
 script: make test && ./test

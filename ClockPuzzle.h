@@ -17,7 +17,7 @@ GArray *getCurrentPath(SearchTreeNode *node);
 
 void printPath(GArray *path, uint8_t clock[]);
 
-GArray *findClockSolution(uint8_t clock[], int clockSize,
+GArray *findClockSolution(uint8_t clock[], uint8_t clockSize,
     json_object *stateList, uint8_t startPosition);
 /**
 * Encuentra la prinera solucion de un reloj
@@ -26,9 +26,9 @@ GArray *findClockSolution(uint8_t clock[], int clockSize,
 * @param stateList un json object donde guardar la lista de estados. El resultado
 * es un array de arrays de posiciones. Si es null no hace nada
 */
-GArray *findFirstClockSolution(uint8_t clock[], int clockSize,
+GArray *findFirstClockSolution(uint8_t clock[], uint8_t clockSize,
     json_object *stateList);
 
-GArray *findAllClockSolutions(uint8_t clock[], int clockSize, json_object *stateList);
+GArray *findAllClockSolutions(uint8_t clock[], uint8_t clockSize, json_object *stateList);
 
 #endif

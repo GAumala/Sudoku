@@ -1,6 +1,7 @@
 #include "SearchTreeNode.h"
 
 SearchTreeNode *newSearchTreeNode(SearchTreeNode *parent, void *content){
+    uint8_t *cont = (uint8_t*)content;
     SearchTreeNode *stn = (SearchTreeNode *) malloc(sizeof(SearchTreeNode));
     stn->leftChild = NULL;
     stn->rightChild = NULL;

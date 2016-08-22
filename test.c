@@ -74,8 +74,9 @@ void testGetCurrentCycle() {
 }
 
 void testFindFirstSolution(){
-    uint8_t array[] = {3, 1, 3, 1, 2, 3};
-    uint8_t clockSize = 6;
+    //uint8_t array[] = {3, 1, 3, 1, 2, 3};
+    uint8_t array[] = {3, 1, 3, 5, 2, 5, 1, 2, 3, 5};
+    uint8_t clockSize = 10;
     printf("\n====================\n");
     printf("find first Solution\n");
     printf("====================\n");
