@@ -2,10 +2,11 @@ language: c
 
 compiler: gcc
 
+dist: trusty
+
 before_install:
-  - ls /usr/include | grep json
-  - ls /usr/include/json
   - sudo apt-get -qq update
   - sudo apt-get install -y libjson0 libjson0-dev
+  - pkg-config --cflags json-c
 
 script: make test && ./test
