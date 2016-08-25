@@ -1,4 +1,4 @@
-all: main
+all: main brute
 
 GLIB = `pkg-config --cflags --libs glib-2.0`
 JSONLIB = `pkg-config --cflags --libs json-c`
@@ -11,17 +11,17 @@ SearchTreeNode.o: SearchTreeNode.c
 ClockPuzzle.o: ClockPuzzle.c
 	gcc -c $(DEBUG) $(C99)  ClockPuzzle.c $(GLIB) $(JSONLIB) -o ClockPuzzle.o
 
-cmdclock.o: cmdclock.c
-	gcc -c $(C99) cmdclock.c -o cmdclock.o
+ClockUtils.o: ClockUtils.c
+	gcc -c $(C99) ClockUtils.c -o ClockUtils.o
 
-main: ClockPuzzle.o SearchTreeNode.o cmdclock.o main.c
-	gcc $(DEBUG) $(C99) ClockPuzzle.o SearchTreeNode.o cmdclock.o main.c $(GLIB) $(JSONLIB) -o main
+main: ClockPuzzle.o SearchTreeNode.o ClockUtils.o main.c
+	gcc $(DEBUG) $(C99) ClockPuzzle.o SearchTreeNode.o ClockUtils.o main.c $(GLIB) $(JSONLIB) -o main
 
-brute: cmdclock.o BruteForce.c
-	gcc $(DEBUG) $(C99) cmdclock.o BruteForce.c -o brute
+brute: ClockUtils.o BruteForce.c
+	gcc $(DEBUG) $(C99) ClockUtils.o BruteForce.c $(GLIB) $(JSONLIB) -o brute
 
 test: ClockPuzzle.o SearchTreeNode.o test.c
 	gcc $(DEBUG) $(C99) ClockPuzzle.o SearchTreeNode.o test.c $(GLIB) $(JSONLIB) -o test
 
 clean:
-	rm *.o main test
+	rm *.o main brute

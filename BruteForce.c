@@ -3,7 +3,8 @@
 #include <math.h>
 #include <stdint.h>
 
-#include "cmdclock.h"
+#include "ClockUtils.h"
+#include "ClockPuzzle.h"
 
 uint8_t max(uint8_t a, uint8_t b){
 	return a > b? a : b;
@@ -11,21 +12,12 @@ uint8_t max(uint8_t a, uint8_t b){
 
 uint8_t evaluateSolution(uint8_t *per, uint8_t *clock, uint8_t length){
 	for (uint8_t i = 0; i < length - 1; i++){
-		if ((per[(i + 1) % length] != ((per[i] + clock[per[i]]) % length))
-			&& (per[(i + 1) % length] != (max(length + per[i] - clock[per[i]], per[i] - clock[per[i]]) % length))){
+		if ((per[(i + 1) % length] != getValidIndex(length, per[i] + clock[per[i]]))
+			&& (per[(i + 1) % length] != getValidIndex(length, per[i] - clock[per[i]]))){
 			return 0;
 		}
 	}
 	return 1;
-}
-
-void printClock(uint8_t* clock, uint8_t length){
-	printf("[ ");
-	printf("%d", clock[0]);
-	for (uint8_t i = 1; i < length; i++){
-		printf(", %d", clock[i]);
-	}
-	printf(" ]\n");
 }
 
 void swap(uint8_t *x, uint8_t *y){
@@ -35,16 +27,6 @@ void swap(uint8_t *x, uint8_t *y){
 	*y = temp;
 }
 
-uint8_t* clockCpy(uint8_t *clock, uint8_t length){
-	uint8_t *new_array;
-	new_array = (uint8_t*)malloc(sizeof(uint8_t)*length);
-
-	for (uint8_t i = 0; i < length; i++){
-		new_array[i] = i;
-	}
-
-	return new_array;
-}
 
 void permute(uint8_t *tmp, uint8_t l, uint8_t r, uint8_t *clock, uint8_t length){
 	uint8_t i;

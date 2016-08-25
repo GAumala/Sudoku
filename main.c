@@ -1,5 +1,5 @@
+#include "ClockUtils.h"
 #include "ClockPuzzle.h"
-#include "cmdclock.h"
 #include <string.h>
 
 

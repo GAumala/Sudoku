@@ -16,19 +16,6 @@ json_object *newJSONArray(uint8_t clock[], GArray *state){
     return newArray;
 }
 
-uint8_t getValidIndex(uint8_t clockSize, int16_t rawIndex){
-    uint8_t res = rawIndex;
-    if(rawIndex == 0 || ((uint8_t)rawIndex) == clockSize){
-        return 0;
-    }
-
-    if(rawIndex < 0){
-        int16_t clock16 = (int16_t) clockSize;
-        res = (uint8_t)(clock16 + rawIndex);
-    } else if(rawIndex > clockSize)
-        res = rawIndex - clockSize;
-    return res;
-}
 void generarHijos(uint8_t clock[], uint8_t clockSize, SearchTreeNode *node){
     uint8_t *nodeClockItem = (uint8_t *) node->content;
     uint8_t clockItemIndex = getClockItemIndex(clock, nodeClockItem);
@@ -73,12 +60,6 @@ GArray *getCurrentPath(SearchTreeNode *node){
     return array;
 }
 
-void printClock(uint8_t clock[], uint8_t clockSize){
-    printf("clock: [ %d", clock[0]);
-    for(uint8_t i = 1; i < clockSize; i++)
-        printf(", %d", clock[i]);
-    printf(" ] size: %d\n", clockSize);
-}
 
 GArray *findClockSolution(uint8_t clock[], uint8_t clockSize,
     json_object *stateList, uint8_t startPosition){
