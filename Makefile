@@ -11,8 +11,14 @@ SearchTreeNode.o: SearchTreeNode.c
 ClockPuzzle.o: ClockPuzzle.c
 	gcc -c $(DEBUG) $(C99)  ClockPuzzle.c $(GLIB) $(JSONLIB) -o ClockPuzzle.o
 
-main: ClockPuzzle.o SearchTreeNode.o main.c
-	gcc $(DEBUG) $(C99) ClockPuzzle.o SearchTreeNode.o main.c $(GLIB) $(JSONLIB) -o main
+cmdclock.o: cmdclock.c
+	gcc -c $(C99) cmdclock.c -o cmdclock.o
+
+main: ClockPuzzle.o SearchTreeNode.o cmdclock.o main.c
+	gcc $(DEBUG) $(C99) ClockPuzzle.o SearchTreeNode.o cmdclock.o main.c $(GLIB) $(JSONLIB) -o main
+
+brute: cmdclock.o BruteForce.c
+	gcc $(DEBUG) $(C99) cmdclock.o BruteForce.c -o brute
 
 test: ClockPuzzle.o SearchTreeNode.o test.c
 	gcc $(DEBUG) $(C99) ClockPuzzle.o SearchTreeNode.o test.c $(GLIB) $(JSONLIB) -o test
