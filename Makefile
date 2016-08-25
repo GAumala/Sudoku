@@ -20,8 +20,8 @@ main: ClockPuzzle.o SearchTreeNode.o ClockUtils.o main.c
 brute: ClockUtils.o BruteForce.c
 	gcc $(DEBUG) $(C99) ClockUtils.o BruteForce.c $(GLIB) $(JSONLIB) -o brute
 
-test: ClockPuzzle.o SearchTreeNode.o test.c
-	gcc $(DEBUG) $(C99) ClockPuzzle.o SearchTreeNode.o test.c $(GLIB) $(JSONLIB) -o test
+test: ClockPuzzle.o ClockUtils.o SearchTreeNode.o test.c
+	gcc $(DEBUG) $(C99) ClockPuzzle.o ClockUtils.o SearchTreeNode.o test.c $(GLIB) $(JSONLIB) -o test
 
 clean:
 	rm *.o main brute
