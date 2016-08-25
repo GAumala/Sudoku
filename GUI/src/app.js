@@ -12,9 +12,11 @@ import Undo from 'material-ui/svg-icons/content/undo';
 import Redo from 'material-ui/svg-icons/content/redo';
 
 import {
-grey500,
-cyan500,
-blue500,
+grey500 as neutralColor,
+red500 as errorColor,
+blue200 as lightColor,
+blue500 as darkColor,
+blue700 as darkerColor,
 } from 'material-ui/styles/colors';
 
 import request from 'superagent'
@@ -55,7 +57,7 @@ class InputView extends React.Component {
 
         if(valid){
             this.props.onNewClock(newClockText.split(" "))
-        } 
+        }
     }
 
     render(){
@@ -75,11 +77,15 @@ class ClockView extends React.Component {
         return (
           <div style={{textAlign:'center'}}>
             {this.props.clock.map((clockItem, i) => {
-                let color = grey500
+                let color = neutralColor
                 if(this.props.currentPosition === i)
-                    color = blue500
+                    color = darkerColor
                 else if(this.props.lastPosition === i)
-                    color = cyan500
+                    color = darkColor
+                else if(this.props.errorPosition === i)
+                    color = errorColor
+                else if(this.props.visitedPositions.includes(i))
+                    color = lightColor
                 if(i === 0)
                     return (
                       <Avatar key={i} backgroundColor={color} style={avatarStyle}>{clockItem}</Avatar>
@@ -116,7 +122,7 @@ class StateNavigation extends React.Component {
                 <Redo />
               </IconButton>
             </div>
-            <ClockView clock={this.props.currentState} />
+            <ClockView clock={this.props.currentState} visitedPositions={[]}/>
             <p style={{textAlign: 'center'}}>{this.props.footerMsg}</p>
           </div>
         )
@@ -150,16 +156,27 @@ class AppContainer extends React.Component {
         let currentStateViewer = <div />
         let currentPosition = -1
         let lastPosition = -1
+        let errorPosition = -1
         let msg = ""
+        let visitedPositions = []
         if(this.state.statesList.length > 0){
             const currentStateList = this.state.statesList[this.state.currentIndex]
             const msg =`${this.state.currentIndex + 1}/${this.state.statesList.length}`
+            visitedPositions = currentStateList
             currentStateViewer = <StateNavigation footerMsg={msg}
             currentState={currentStateList} undo={this.undo} redo={this.redo} />
             currentPosition = currentStateList[currentStateList.length - 1]
+
             if(currentStateList.length > 1){
                 lastPosition = currentStateList[currentStateList.length - 2]
             }
+
+            if(this.state.currentIndex > 0){
+                const prevState = this.state.statesList[this.state.currentIndex - 1]
+                if(prevState.length > currentStateList.length)
+                    errorPosition = prevState[prevState.length - 1]
+            }
+
         } else if(this.state.clock.length > 0){//got a clock, but no solutions
             currentStateViewer = <p style={{textAlign:'center'}}>No solutions found</p>
 
@@ -173,8 +190,9 @@ class AppContainer extends React.Component {
                   this.setState({clock: newClock, statesList: response, currentIndex: 0})
               }
             )}/>
-            <ClockView clock={this.state.clock}
-            lastPosition={lastPosition} currentPosition={currentPosition}/>
+            <ClockView clock={this.state.clock} visitedPositions={visitedPositions}
+            lastPosition={lastPosition} currentPosition={currentPosition}
+            errorPosition={errorPosition}/>
             <br /><br />
             { currentStateViewer }
           </div>
