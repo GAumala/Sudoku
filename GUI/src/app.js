@@ -106,12 +106,15 @@ class ClockView extends React.Component {
 class StateNavigation extends React.Component {
     render(){
         const buttonsDistance = 120
-        const iconStyle = {width: 48, height: 48}
-        const defStyle = {width: 96, height: 96, padding:24}
+        const iconStyle = {width: 36, height: 36}
+        const defStyle = {width: 72, height: 72, padding: 16}
 
         return (
           <div>
             <h2 style={{textAlign:'center'}}>State Navigation</h2>
+            <ClockView clock={this.props.currentState} visitedPositions={[]}/>
+            <br />
+            <p style={{textAlign: 'center', marginBottom: 0}}>{this.props.footerMsg}</p>
             <div style={{position: 'relative', textAlign: 'center' }}>
               <IconButton iconStyle={iconStyle} style={{ ...defStyle, marginRight: buttonsDistance}}
                 onTouchTap={() => this.props.undo()}>
@@ -122,8 +125,6 @@ class StateNavigation extends React.Component {
                 <Redo />
               </IconButton>
             </div>
-            <ClockView clock={this.props.currentState} visitedPositions={[]}/>
-            <p style={{textAlign: 'center'}}>{this.props.footerMsg}</p>
           </div>
         )
     }
