@@ -178,7 +178,7 @@ class AppContainer extends React.Component {
                     } else if(this.state.isPlaying) {
                         this.setState({isPlaying: false})
                     }
-                }, 1000)
+                }, 1500)
             }
             newFrame()
         } else {
