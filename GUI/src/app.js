@@ -10,6 +10,8 @@ import IconButton from 'material-ui/IconButton';
 
 import Undo from 'material-ui/svg-icons/content/undo';
 import Redo from 'material-ui/svg-icons/content/redo';
+import PlayArrow from 'material-ui/svg-icons/av/play-arrow';
+import Pause from 'material-ui/svg-icons/av/pause';
 
 import {
 grey500 as neutralColor,
@@ -109,6 +111,9 @@ class StateNavigation extends React.Component {
         const iconStyle = {width: 36, height: 36}
         const defStyle = {width: 72, height: 72, padding: 16}
 
+        let animIcon = <PlayArrow />
+        if(this.props.isPlaying)
+            animIcon = <Pause />
         return (
           <div>
             <h2 style={{textAlign:'center'}}>State Navigation</h2>
@@ -116,12 +121,17 @@ class StateNavigation extends React.Component {
             <br />
             <p style={{textAlign: 'center', marginBottom: 0}}>{this.props.footerMsg}</p>
             <div style={{position: 'relative', textAlign: 'center' }}>
-              <IconButton iconStyle={iconStyle} style={{ ...defStyle, marginRight: buttonsDistance}}
-                onTouchTap={() => this.props.undo()}>
+              <IconButton iconStyle={iconStyle} style={defStyle}
+                disabled={this.props.isPlaying} onTouchTap={() => this.props.undo()}>
                 <Undo />
               </IconButton>
-              <IconButton iconStyle={iconStyle} style={{ ...defStyle, marginLeft: buttonsDistance}}
-                onTouchTap={() => this.props.redo()}>
+              <IconButton iconStyle={iconStyle}
+              style={{ ...defStyle, marginLeft: buttonsDistance, marginRight: buttonsDistance}}
+                onTouchTap={() => this.props.play()}>
+                { animIcon }
+              </IconButton>
+              <IconButton iconStyle={iconStyle} style={defStyle}
+                disabled={this.props.isPlaying} onTouchTap={() => this.props.redo()}>
                 <Redo />
               </IconButton>
             </div>
@@ -137,20 +147,43 @@ class AppContainer extends React.Component {
             clock: [],
             statesList: [],
             currentIndex: 0,
+            isPlaying: false,
         }
         this.undo = this.undo.bind(this)
         this.redo = this.redo.bind(this)
+        this.play = this.play.bind(this)
     }
 
     undo(){
         const index = this.state.currentIndex
-        this.setState({currentIndex: Math.max(0, index - 1)})
+        if(!this.state.isPlaying)
+            this.setState({currentIndex: Math.max(0, index - 1)})
     }
 
     redo(){
-
         const index = this.state.currentIndex
-        this.setState({currentIndex: Math.min(this.state.statesList.length - 1, index + 1)})
+        if(!this.state.isPlaying)
+            this.setState({currentIndex: Math.min(this.state.statesList.length - 1, index + 1)})
+    }
+
+    play(){
+        if(!this.state.isPlaying){
+            this.setState({currentIndex: 0, isPlaying: true})
+            const newFrame = () => {
+                setTimeout(() => {
+                    const index = this.state.currentIndex
+                    this.setState({currentIndex: index + 1})
+                    if(this.state.isPlaying && index < this.state.statesList.length - 2){
+                        newFrame()
+                    } else if(this.state.isPlaying) {
+                        this.setState({isPlaying: false})
+                    }
+                }, 1000)
+            }
+            newFrame()
+        } else {
+            this.setState({isPlaying: false})
+        }
     }
 
     render(){
@@ -164,8 +197,9 @@ class AppContainer extends React.Component {
             const currentStateList = this.state.statesList[this.state.currentIndex]
             const msg =`${this.state.currentIndex + 1}/${this.state.statesList.length}`
             visitedPositions = currentStateList
-            currentStateViewer = <StateNavigation footerMsg={msg}
-            currentState={currentStateList} undo={this.undo} redo={this.redo} />
+            currentStateViewer = <StateNavigation footerMsg={msg} play={this.play}
+            currentState={currentStateList} undo={this.undo} redo={this.redo}
+            isPlaying={this.state.isPlaying} />
             currentPosition = currentStateList[currentStateList.length - 1]
 
             if(currentStateList.length > 1){
